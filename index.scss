@@ -1,0 +1,23 @@
+$breakpoints: (
+    "SE": "screen and (max-width: 375px)",
+    "XR": "screen and (max-width: 414px)",
+    "Max": "screen and (max-width: 428px)",
+    "iPad": "screen and (max-width: 768px)",
+    "iPadPro": "screen and (max-width: 1024px)",
+    "Air": "screen and (max-width: 1440px)",
+    "Pro": "screen and (max-width: 1792px)",
+    "HD": "screen and (max-width: 1920)",
+    "upto4k": "screen and (min-width: 1921px)"
+);
+
+@mixin mq($breakpoint) {
+    @media #{map-get($breakpoints, $breakpoint)} {
+        @content;
+    }
+}
+
+@mixin mqpx($size, $unit: 'px') {
+    @media screen and (max-width: #{$size + $unit}) {
+        @content;
+    }
+}
