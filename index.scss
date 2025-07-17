@@ -6,19 +6,29 @@ $breakpoints: (
     "iPadPro": "screen and (max-width: 1024px)",
     "Air": "screen and (max-width: 1440px)",
     "Pro": "screen and (max-width: 1792px)",
-    "HD": "screen and (max-width: 1920)",
+    "HD": "screen and (max-width: 1920px)",
     "upto4k": "screen and (min-width: 1921px)"
-);
+) !default;
 
 @use "sass:map";
 
 @mixin mq($breakpoint) {
-    @media #{map.get($breakpoints, $breakpoint)} {
+    $query: map.get($breakpoints, $breakpoint);
+    @if $query == null {
+        @error "Breakpoint '#{$breakpoint}' not found in $breakpoints map. Available breakpoints: #{map.keys($breakpoints)}";
+    }
+    @media #{$query} {
         @content;
     }
 }
 
 @mixin mqpx($size, $unit: 'px') {
+    @if type-of($size) != number {
+        @error "Expected number for $size, but got #{type-of($size)}";
+    }
+    @if $unit != 'px' and $unit != 'em' and $unit != 'rem' and $unit != '%' and $unit != 'vw' and $unit != 'vh' {
+        @error "Invalid unit '#{$unit}'. Supported units: px, em, rem, %, vw, vh";
+    }
     @media screen and (max-width: #{$size + $unit}) {
         @content;
     }
